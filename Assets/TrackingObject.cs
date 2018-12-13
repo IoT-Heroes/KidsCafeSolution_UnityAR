@@ -6,7 +6,8 @@ using Vuforia;
 public class TrackingObject : MonoBehaviour, ITrackableEventHandler
 {
     private TrackableBehaviour trackableBehaviour;
-    public bool is_detected_ = false; 
+    public bool is_detected_ = false;
+    public string model_name = "";
 
     // Use this for initialization
     void Start () {
@@ -17,6 +18,8 @@ public class TrackingObject : MonoBehaviour, ITrackableEventHandler
             trackableBehaviour.RegisterTrackableEventHandler(this);
         }
 
+        // TODO : TrackableName이 imageTarget 이름을 가져옴 -> 이걸로 밴드 디바이스 가져와서 내일 네트워크 통신 구현할 것
+        model_name = trackableBehaviour.TrackableName;
     }
 	
 	// Update is called once per frame
