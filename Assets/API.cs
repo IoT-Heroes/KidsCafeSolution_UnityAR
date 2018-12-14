@@ -61,48 +61,45 @@ public class API : MonoBehaviour {
     
     public void Request()
     {
+        StartCoroutine(Upload());
+        //WWWForm form = new WWWForm();
+        //// header 정의
+        //Dictionary<string, string> headers = form.headers;
+        //headers["test"] = "eeee";
+
+        //// path 정의
+        //string path = "/zone1/deviceEvents";
+        //string loginPath = "/user/management/login";
+
+        //// post body?
+        //form.AddField("id", "KSH");
+        //form.AddField("password", "111");
+        //byte[] rawFormData = form.data;
+
+        //WWW request = new WWW(URL + loginPath, form);
+
+        //Debug.Log(request.text);
+        //StartCoroutine(OnResponse(request));
+    }
+
+    IEnumerator Upload()
+    {
         //WWWForm form = new WWWForm();
         //form.AddField("id", "KSH");
         //form.AddField("password", "111");
 
-        //string loginPath = "/user/management/login";
+        //UnityWebRequest www = UnityWebRequest.Post("http://192.168.0.4:7080/heroes/user/management/login", form);
+        UnityWebRequest www = UnityWebRequest.Get("http://192.168.0.4:7080/heroes/data/food/select");
+        yield return www.SendWebRequest();
 
-        //UnityWebRequest www = UnityWebRequest.Post(IoTMakers_ENDPOINT + loginPath, form);
-        //yield return www.Send ();
-
-        //if (www.error != null)
-        //{
-        //    Debug.Log("Error : " + www.error);
-        //}
-        //else
-        //{
-        //    Debug.Log("Response : " + www.downloadHandler.text);
-
-        //    Response response = JsonUtility.FromJson<Response>(www.downloadHandler.text);
-
-        //    responseText.text = response.ToString();
-        //}
-
-
-        WWWForm form = new WWWForm();
-        // header 정의
-        Dictionary<string, string> headers = form.headers;
-        headers["test"] = "eeee";
-
-        // path 정의
-        string path = "/zone1/deviceEvents";
-        string loginPath = "/user/management/login";
-
-        // post body?
-        form.AddField("id", "KSH");
-        form.AddField("password", "111");
-        byte[] rawFormData = form.data;
-
-        WWW request = new WWW(URL + loginPath, form);
-
-        Debug.Log(request.text);
-        StartCoroutine(OnResponse(request));
-        //StartCoroutine(WaitWWW(form, URL + loginPath));
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            responseText.text = www.downloadHandler.text;
+        }
     }
 
     private IEnumerator OnResponse(WWW req)
@@ -111,16 +108,6 @@ public class API : MonoBehaviour {
         if (req.isDone && req.error == null)
         {
             responseText.text = req.text;
-        }
-    }
-
-    private IEnumerator WaitWWW(WWWForm form, string url)
-    {
-        WWW www = new WWW(url, form);
-        yield return www;
-        if (www.isDone && www.error == null)
-        {
-            responseText.text = www.text;
         }
     }
 }
