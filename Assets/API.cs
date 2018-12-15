@@ -137,6 +137,6 @@ public class API : MonoBehaviour {
 
     public void Request()
     {
-        StartCoroutine(testPost());
+        StartCoroutine(getIoTMakersAPI());
     }
 }
