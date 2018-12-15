@@ -102,11 +102,6 @@ public class API : MonoBehaviour {
         return request;
     }
 
-    private IEnumerator request(UnityWebRequest www)
-    {
-        yield return www.SendWebRequest();
-    }
-
     // 통신 성공!!
     private IEnumerator testPost()
     {
@@ -131,12 +126,12 @@ public class API : MonoBehaviour {
         {
             // show result as text
             Debug.Log("success!");
-            //Response response = JsonUtility.FromJson<Response>(www.downloadHandler.text);
+            Response response = JsonUtility.FromJson<Response>(www.downloadHandler.text);
 
-            //responseText.text = response.data.name;
-            responseText.text = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
-            Debug.Log(www.downloadHandler.data.ToString());
-            Debug.Log(www.downloadHandler.text);
+            responseText.text = response.data.name;
+            //responseText.text = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
+            //Debug.Log(www.downloadHandler.data.ToString());
+            //Debug.Log(www.downloadHandler.text);
         }
     }
 
