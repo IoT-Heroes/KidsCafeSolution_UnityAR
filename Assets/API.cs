@@ -67,6 +67,30 @@ public class API : MonoBehaviour {
         public string password;
     }
 
+    public IEnumerator getIoTMakersAPI()
+    {
+        UnityWebRequest www = UnityWebRequest.Get("https://iotmakers.kt.com:443/api/v1/device/zone1/deviceEvents");
+        string token = "Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdmNfdGd0X3NlcSI6IjEwMDAwMDY0NTEiLCJ1c2VyX25hbWUiOiJsb2NrYW5kbG9jazEiLCJwdWJfdGltZSI6MTU0NDg1MDE4NDM3NSwibWJyX2lkIjoibG9ja2FuZGxvY2sxIiwibWJyX3NlcSI6IjEwMDAwMDYzMzQiLCJtYnJfY2xhcyI6IjAwMDMiLCJhdXRob3JpdGllcyI6WyJST0xFX09QRU5BUEkiLCJST0xFX1VTRVIiXSwicGxhdGZvcm0iOiIzTVAiLCJ0aGVtZV9jZCI6IlBUTCIsImNsaWVudF9pZCI6IllPa1ZVOHJCRVhsaWlsVloiLCJhdWQiOlsiSU9ULUFQSSJdLCJ1bml0X3N2Y19jZCI6IjAwMSIsInNjb3BlIjpbInRydXN0Il0sImRzdHJfY2QiOiIwMDEiLCJjb21wYW55IjoiS3QiLCJtYnJfbm0iOiLquYDtmY3qt5wiLCJleHAiOjE1NDU0NTAxODQsImp0aSI6ImFkYTQ2N2UzLTJiYTMtNGQ3ZC1iNTc2LTNlZTYzYTU2NmVlZSJ9.UEISQ_ru_llgcTsK0hxkJuDa7kSYPBHMSwczsznHmB3OURaKWwqx3m_2UJlRr5rUjgS8q9yvTGGZNSomD_W23oErpu32xUE9Wk4kGz-D53kz7VnliMwNPzWC-MHG5fV5kx-rE2bQcp51DGppFDLQbuIciSQPFfnzEAjCE2EE_04in2Ehds2DqZLNLrSywodOhDLWFT4UFIqqhAxsh7E2gzu9HSGu5zLV3GJCO6rDghFJMcHcWpafHogPi1xPRrCWB_OxBVuomRciSFPYXpe1XxLy7RuPR83dgchIpAjul4-3eiuEO9VqRSGSJjbOZoo2FiGpBTgtawNN-UvuEz-udA";
+        www.SetRequestHeader("Authorization", token);
+
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            // Show results as text
+            Debug.Log(www.downloadHandler.text);
+
+            // Or retrieve results as binary data
+            byte[] results = www.downloadHandler.data;
+
+            responseText.text = www.downloadHandler.text;
+        }
+    }
+
     private UnityWebRequest makePOST(string url, string bodyJsonString)
     {
         var request = new UnityWebRequest(url, "POST");
@@ -83,9 +107,9 @@ public class API : MonoBehaviour {
         yield return www.SendWebRequest();
     }
 
-    public void Request()
+    // 통신 성공!!
+    private IEnumerator testPost()
     {
-        // use json (안됨)
         Login login = new Login();
         login.id = "KSH";
         login.password = "111";
@@ -94,13 +118,11 @@ public class API : MonoBehaviour {
 
         Debug.Log(json);
 
-        UnityWebRequest www = makePOST("http://192.168.0.4:7080/heroes/user/management/login", json);
+        UnityWebRequest www = makePOST("http://220.94.248.34:7080/heroes/user/management/login", json);
 
-        //UnityWebRequest www = UnityWebRequest.Post("http://192.168.0.4:7080/heroes/user/management/login", json);
-        //www.SetRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        yield return www.SendWebRequest();
 
-        StartCoroutine(request(www));
-
+        // 데이터는 yield 다음~
         if (www.isNetworkError || www.isHttpError)
         {
             Debug.Log(www.error);
@@ -116,5 +138,10 @@ public class API : MonoBehaviour {
             Debug.Log(www.downloadHandler.data.ToString());
             Debug.Log(www.downloadHandler.text);
         }
+    }
+
+    public void Request()
+    {
+        StartCoroutine(testPost());
     }
 }
