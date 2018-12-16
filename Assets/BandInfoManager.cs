@@ -8,10 +8,10 @@ using System;
 
 public class BandInfoManager : MonoBehaviour
 {
-    public TrackingObject obj_band1;
-    public TrackingObject obj_band2;
-    public Text humid_text;
-    public Text temp_text;
+    public TrackingObject[] obj_band;
+    public TrackingObject[] obj_zone;
+    public TextMesh[] humid_text;
+    public TextMesh[] temp_text;
 
     private void Awake()
     {
@@ -25,17 +25,33 @@ public class BandInfoManager : MonoBehaviour
 
     private void OnGUI()
     {
-        // 인식되면 밴드 정보를 안드로이드로 넘겨준다
-        if (obj_band1.is_detected_)
+        for (int i = 0; i < obj_band.Length; i++)
         {
-            StartCoroutine(getZoneData(humid_text, temp_text));
+            if (obj_band[i].is_detected_)
+            {
+                //StartCoroutine(getZoneData(humid_text[i], temp_text[i]));
+            }
+        }
+        for (int i = 0; i < obj_zone.Length; i++)
+        {
+            TrackingObject zone = obj_zone[i];
+            if (zone.is_detected_)
+            {
+                StartCoroutine(getZoneData(zone.model_name, humid_text[i], temp_text[i]));
+            }
         }
 
-        // zone이라고 가정
-        if (obj_band2.is_detected_)
-        {
-            GUI.Button(new Rect(300, 300, 240, 120), obj_band2.model_name);
-        }
+        // 인식되면 밴드 정보를 안드로이드로 넘겨준다
+        //if (obj_band1.is_detected_)
+        //{
+        //    StartCoroutine(getZoneData(zone1_humid_text, zone1_temp_text));
+        //}
+
+        //// zone이라고 가정
+        //if (obj_band2.is_detected_)
+        //{
+        //    GUI.Button(new Rect(300, 300, 240, 120), obj_band2.model_name);
+        //}
     }
 
     [Serializable]
@@ -63,10 +79,12 @@ public class BandInfoManager : MonoBehaviour
         public int temp;
     }
 
-    // TODO : zone 조회시
-    public IEnumerator getZoneData(Text humid_text, Text temp_text)
+    public IEnumerator getZoneData(string zoneId, TextMesh humid_text, TextMesh temp_text)
     {
-        UnityWebRequest www = UnityWebRequest.Get("https://iotmakers.kt.com:443/api/v1/streams/zone1/log?period=10000&count=2");
+        // TODO : zone 여러개 될 경우 아래 zoneId로 바꾸기
+
+        string uri = "https://iotmakers.kt.com:443/api/v1/streams/" + "zone1" + "/log?period=10000&count=2";
+        UnityWebRequest www = UnityWebRequest.Get(uri);
         string token = "Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdmNfdGd0X3NlcSI6IjEwMDAwMDY0NTEiLCJ1c2VyX25hbWUiOiJsb2NrYW5kbG9jazEiLCJwdWJfdGltZSI6MTU0NDg1MDE4NDM3NSwibWJyX2lkIjoibG9ja2FuZGxvY2sxIiwibWJyX3NlcSI6IjEwMDAwMDYzMzQiLCJtYnJfY2xhcyI6IjAwMDMiLCJhdXRob3JpdGllcyI6WyJST0xFX09QRU5BUEkiLCJST0xFX1VTRVIiXSwicGxhdGZvcm0iOiIzTVAiLCJ0aGVtZV9jZCI6IlBUTCIsImNsaWVudF9pZCI6IllPa1ZVOHJCRVhsaWlsVloiLCJhdWQiOlsiSU9ULUFQSSJdLCJ1bml0X3N2Y19jZCI6IjAwMSIsInNjb3BlIjpbInRydXN0Il0sImRzdHJfY2QiOiIwMDEiLCJjb21wYW55IjoiS3QiLCJtYnJfbm0iOiLquYDtmY3qt5wiLCJleHAiOjE1NDU0NTAxODQsImp0aSI6ImFkYTQ2N2UzLTJiYTMtNGQ3ZC1iNTc2LTNlZTYzYTU2NmVlZSJ9.UEISQ_ru_llgcTsK0hxkJuDa7kSYPBHMSwczsznHmB3OURaKWwqx3m_2UJlRr5rUjgS8q9yvTGGZNSomD_W23oErpu32xUE9Wk4kGz-D53kz7VnliMwNPzWC-MHG5fV5kx-rE2bQcp51DGppFDLQbuIciSQPFfnzEAjCE2EE_04in2Ehds2DqZLNLrSywodOhDLWFT4UFIqqhAxsh7E2gzu9HSGu5zLV3GJCO6rDghFJMcHcWpafHogPi1xPRrCWB_OxBVuomRciSFPYXpe1XxLy7RuPR83dgchIpAjul4-3eiuEO9VqRSGSJjbOZoo2FiGpBTgtawNN-UvuEz-udA";
         www.SetRequestHeader("Authorization", token);
 
