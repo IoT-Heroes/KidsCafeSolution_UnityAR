@@ -38,6 +38,4 @@ public class BandConnectManager : MonoBehaviour {
             gate.SetBandId(obj_band2.model_name);
         }
     }
-
-
 }
