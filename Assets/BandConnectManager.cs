@@ -31,13 +31,11 @@ public class BandConnectManager : MonoBehaviour {
         if (obj_band1.is_detected_)
         {
             gate.SetBandId(obj_band1.model_name);
-            GUI.Button(new Rect(300, 300, 240, 120), obj_band1.model_name);
         }
 
         if (obj_band2.is_detected_)
         {
             gate.SetBandId(obj_band2.model_name);
-            GUI.Button(new Rect(600, 300, 240, 120), obj_band2.model_name);
         }
     }
 
