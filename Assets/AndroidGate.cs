@@ -41,4 +41,10 @@ public class AndroidGate : MonoBehaviour {
     {
         curActivity.Call("setKidId");
     }
+
+
+    public void GoBack()
+    {
+        curActivity.Call("goBack");
+    }
 }
