@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class BandConnectManager : MonoBehaviour {
     public TrackingObject obj_band1;
     public TrackingObject obj_band2;
-    public Text kid_id_text;
 
     public AndroidGate gate;
 
@@ -26,7 +25,6 @@ public class BandConnectManager : MonoBehaviour {
 
     private void OnGUI()
     {
-        kid_id_text.text = gate.kidId;
         // 인식되면 밴드 정보를 안드로이드로 넘겨준다
         if (obj_band1.is_detected_)
         {

@@ -17,7 +17,7 @@ public class ZoneInfoManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        Debug.Log(Vuforia.VuforiaUnity.GetVuforiaLibraryVersion().ToString());
     }
 
     private void OnGUI()

@@ -14,8 +14,7 @@ public class SceneGate : MonoBehaviour {
     void Start () {
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         curActivity = jc.GetStatic<AndroidJavaObject>("currentActivity");
-        //CallScenePage();
-        SetScenePage("ar_info");
+        CallScenePage();
     }
 
     // 모드에 따른 scene을 활성화 시킨다

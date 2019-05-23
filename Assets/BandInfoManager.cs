@@ -57,7 +57,7 @@ public class BandInfoManager : MonoBehaviour
     public IEnumerator getBandData(string bandId, TextMesh start_time_text, TextMesh end_time_text, TextMesh cost_text)
     {
         // TODO : band 여러개 될 경우 아래 bandId로 바꾸기
-        string uri = "http://192.168.0.4:7080/heroes/visitingrecord/management?bandDeviceId=" + "BAND3";
+        string uri = "http://221.148.109.180:7080/heroes/visitingrecord/management?bandDeviceId=BAND3";
         UnityWebRequest www = UnityWebRequest.Get(uri);
 
         yield return www.SendWebRequest();
@@ -70,7 +70,7 @@ public class BandInfoManager : MonoBehaviour
         {
             Response response = JsonUtility.FromJson<Response>(www.downloadHandler.text);
 
-            Debug.Log(www.downloadHandler.text);
+            Debug.Log("test: " + www.downloadHandler.text);
             Debug.Log(response.state);
             if (response.state == 2002)
             {
